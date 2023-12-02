@@ -4,15 +4,15 @@ def chooseMenu():
     while True:
         print("Enkripsi dan Dekripsi Berbasis ASCII 8 BIT")
         print("\nTipe Input Pesan:")
-        print("1. Bit")
-        print("2. Karakter")
+        print("1. Karakter")
+        print("2. Bit")
 
         menuChoice = input("Pilih tipe input (1/2): ")
 
         if menuChoice == '1':
-            XORBit()
-        elif menuChoice == '2':
             XORChar()
+        elif menuChoice == '2':
+            XORBit()
             break
         else:
             print("Pilihan tidak valid. Silakan pilih 1 atau 2.")
@@ -29,13 +29,13 @@ def equalizeLength():
     global finalKey
 
     bitToCharLength = int(len(inputMsg)/8)
-    if menuChoice == '1':
+    if menuChoice == '2':
         if bitToCharLength > len(inputKey):
             tempInputKey = inputKey * (bitToCharLength // len(inputKey) + 1)
             finalKey = tempInputKey[:bitToCharLength]
         else:
             finalKey = inputKey[:bitToCharLength]
-    elif menuChoice == '2':
+    elif menuChoice == '1':
         if len(inputMsg) > len(inputKey):
             tempInputKey = inputKey * (len(inputMsg) // len(inputKey) + 1)
             finalKey = tempInputKey[:len(inputMsg)]
@@ -54,7 +54,7 @@ def equalizeBitDigit(inputData):
 def printMsgAndKey():
     equalizeLength()
     
-    if menuChoice == '1':
+    if menuChoice == '2':
         print("\nPenyamaan Panjang Pesan dan Kunci:")
         print("Pesan: " + inputMsg)
         print(f"Panjang Karakter Pesan: {int(len(inputMsg)/8)}")
@@ -64,7 +64,7 @@ def printMsgAndKey():
         print(printXORResult(inputMsg))
         print("Bit Key:")
         print(equalizeBitDigit(finalKey))
-    elif menuChoice == '2':
+    elif menuChoice == '1':
         print("\nPenyamaan Panjang Pesan dan Kunci:")
         print("Pesan: " + inputMsg)
         print(f"Panjang Karakter Pesan: {len(inputMsg)}")
@@ -111,7 +111,12 @@ def XORBit():
     inputKey = input('Masukkan Key: ')
 
     while len(inputMsg) < 6*8 or len(inputKey) <= 5:
-        print("Message harus terdiri dari 6 byte (48 Biner Karakter) dan Key harus lebih dari 5 karakter")
+        print("Pesan harus terdiri dari 6 byte (48 Biner Karakter) dan Key harus lebih dari 5 karakter")
+        inputMsg = input('Masukkan Pesan: ')
+        inputKey = input('Masukkan Key: ')
+        
+    while len(inputMsg)%8 != 0:
+        print("Pesan harus berbentuk ASCII 8 Bit")
         inputMsg = input('Masukkan Pesan: ')
         inputKey = input('Masukkan Key: ')
 
@@ -125,15 +130,15 @@ def XORBit():
     print(printXORResult(XORResult))
 
     with open("result.txt", 'w') as file:
-        file.write("Hasil Enkripsi Bentuk Karakter:\n")
+        file.write("Hasil Enkripsi/Dekripsi Bentuk Bit:\n")
         file.write(XORResult + "\n\n")
 
-        file.write("Hasil Enkripsi Bentuk Bit:\n")
+        file.write("Hasil Enkripsi/Dekripsi Bentuk Karakter:\n")
         file.write(bitsToChar(XORResult) + "\n\n")
 
-    print("\n======================================================\n")
-    print("Hasil enkripsi berhasil disimpan di file result.txt\n")
-    print("=======================================================\n")
+    print("\n========================================================\n")
+    print("Hasil enkripsi/dekripsi berhasil disimpan di file result.txt\n")
+    print("=========================================================\n")
 
 def XORChar():
     global inputMsg, inputKey, finalKey
@@ -153,10 +158,10 @@ def XORChar():
     print(printXORResult(XORResult))
 
     with open("result.txt", 'w') as file:
-        file.write("Hasil Enkripsi Bentuk Karakter:\n")
+        file.write("Hasil Enkripsi Bentuk Bit:\n")
         file.write(XORResult + "\n\n")
 
-        file.write("Hasil Enkripsi Bentuk Bit:\n")
+        file.write("Hasil Enkripsi Bentuk Karakter:\n")
         file.write(bitsToChar(XORResult) + "\n\n")
 
     print("\n======================================================\n")
